@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include <vector>
 
 using namespace std;
 
@@ -12,9 +11,9 @@ class Enrutador
 {
 private:
     string identificador;
+
     map<string, int> vecinos;
     map<string, int> tablaCostos;
-    map<string, vector<string>> tablaCaminos;
 
 public:
     Enrutador();
@@ -30,15 +29,11 @@ public:
 
     map<string, int> getVecinos() const;
 
-    void actualizarRuta(const string& destino, int costo, const vector<string>& camino);
-    void limpiarTabla();
-
-    bool existeRutaA(const string& destino) const;
-    int obtenerCostoADestino(const string& destino) const;
-    vector<string> obtenerCaminoADestino(const string& destino) const;
+    void actualizarCosto(const string& destino, int costo);
+    void limpiarTablaCostos();
 
     void mostrarVecinos() const;
-    void mostrarTablaEnrutamiento() const;
+    void mostrarTablaCostos() const;
 };
 
 #endif

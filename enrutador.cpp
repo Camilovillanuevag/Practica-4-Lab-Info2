@@ -51,43 +51,14 @@ map<string, int> Enrutador::getVecinos() const
     return vecinos;
 }
 
-void Enrutador::actualizarRuta(const string& destino, int costo, const vector<string>& camino)
+void Enrutador::actualizarCosto(const string& destino, int costo)
 {
     tablaCostos[destino] = costo;
-    tablaCaminos[destino] = camino;
 }
 
-void Enrutador::limpiarTabla()
+void Enrutador::limpiarTablaCostos()
 {
     tablaCostos.clear();
-    tablaCaminos.clear();
-}
-
-bool Enrutador::existeRutaA(const string& destino) const
-{
-    return tablaCostos.find(destino) != tablaCostos.end();
-}
-
-int Enrutador::obtenerCostoADestino(const string& destino) const
-{
-    auto it = tablaCostos.find(destino);
-
-    if (it != tablaCostos.end()) {
-        return it->second;
-    }
-
-    return -1;
-}
-
-vector<string> Enrutador::obtenerCaminoADestino(const string& destino) const
-{
-    auto it = tablaCaminos.find(destino);
-
-    if (it != tablaCaminos.end()) {
-        return it->second;
-    }
-
-    return vector<string>();
 }
 
 void Enrutador::mostrarVecinos() const
@@ -104,36 +75,16 @@ void Enrutador::mostrarVecinos() const
     }
 }
 
-void Enrutador::mostrarTablaEnrutamiento() const
+void Enrutador::mostrarTablaCostos() const
 {
-    cout << "Tabla de enrutamiento de " << identificador << endl;
-    cout << "Destino\tCosto\tCamino" << endl;
+    cout << "Tabla de costos de " << identificador << ":" << endl;
 
     if (tablaCostos.empty()) {
-        cout << "No hay rutas calculadas." << endl;
+        cout << "  No hay costos registrados." << endl;
         return;
     }
 
     for (const auto& par : tablaCostos) {
-        string destino = par.first;
-        int costo = par.second;
-
-        cout << destino << "\t" << costo << "\t";
-
-        auto itCamino = tablaCaminos.find(destino);
-
-        if (itCamino != tablaCaminos.end()) {
-            const vector<string>& camino = itCamino->second;
-
-            for (size_t i = 0; i < camino.size(); i++) {
-                cout << camino[i];
-
-                if (i + 1 < camino.size()) {
-                    cout << " -> ";
-                }
-            }
-        }
-
-        cout << endl;
+        cout << "  Destino: " << par.first << " | Costo: " << par.second << endl;
     }
 }
