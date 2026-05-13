@@ -71,4 +71,55 @@ void Red::eliminarEnrutador(const string& id) {
     recalcularTodo();
     cout << "[-] Enrutador " << id << " eliminado." << endl;
 }
+void Red::agregarEnlace(const string& a, const string& b, int costo) {
+    if (!routers.count(a) || !routers.count(b)) {
+        cout << "[!] Uno o ambos enrutadores no existen." << endl;
+        return;
+    }
+    routers[a].agregarVecino(b, costo);
+    routers[b].agregarVecino(a, costo);
+    recalcularTodo();
+    cout << "[+] Enlace " << a << " <-> " << b
+         << " (costo=" << costo << ") agregado." << endl;
+}
+
+void Red::eliminarEnlace(const string& a, const string& b) {
+    if (!routers.count(a) || !routers.count(b)) {
+        cout << "[!] Uno o ambos enrutadores no existen." << endl;
+        return;
+    }
+    routers[a].eliminarVecino(b);
+    routers[b].eliminarVecino(a);
+    recalcularTodo();
+    cout << "[-] Enlace " << a << " <-> " << b << " eliminado." << endl;
+}
+
+
+void Red::mostrarCamino(const string& origen, const string& destino) const {
+    if (!routers.count(origen) || !routers.count(destino)) {
+        cout << "[!] Origen o destino no encontrado." << endl;
+        return;
+    }
+    const auto& paths = caminos.at(origen);
+    cout << "\nCamino de " << origen << " a " << destino << ": ";
+
+    if (!paths.count(destino) || paths.at(destino).empty()) {
+        cout << "No hay camino." << endl;
+        return;
+    }
+
+    const vector<string>& camino = paths.at(destino);
+    for (size_t i = 0; i < camino.size(); ++i) {
+        if (i) cout << " -> ";
+        cout << camino[i];
+    }
+
+    // Calcular costo sumando enlace a enlace
+    int costo = 0;
+    for (size_t i = 0; i + 1 < camino.size(); ++i)
+        costo += routers.at(camino[i]).obtenerCostoVecino(camino[i + 1]);
+
+    cout << "  Costo total: " << costo << endl;
+}
+
 
