@@ -139,4 +139,62 @@ void Red::mostrarTodasLasTablas() {
         par.second.mostrarTablaCostos();
     }
 }
+void Red::mostrarMatrizCostos() const {
+    vector<string> ids;
+    for (auto& par : routers) ids.push_back(par.first);
+
+    cout << "\n Matriz de costos minimos " << endl;
+    cout << "\t";
+    for (auto& id : ids) cout << id << "\t";
+    cout << endl;
+
+    for (auto& origen : ids) {
+        cout << origen << "\t";
+        for (auto& dest : ids) {
+            if (origen == dest) { cout << "0\t"; continue; }
+            const auto& paths = caminos.at(origen);
+            if (!paths.count(dest) || paths.at(dest).empty()) {
+                cout << "INF\t";
+            } else {
+                const vector<string>& c = paths.at(dest);
+                int total = 0;
+                for (size_t i = 0; i + 1 < c.size(); ++i)
+                    total += routers.at(c[i]).obtenerCostoVecino(c[i + 1]);
+                cout << total << "\t";
+            }
+        }
+        cout << endl;
+    }
+}
+
+
+bool Red::cargarDesdeArchivo(const string& ruta) {
+    ifstream f(ruta);
+    if (!f.is_open()) {
+        cout << "[!] No se pudo abrir: " << ruta << endl;
+        return false;
+    }
+    string linea;
+    while (getline(f, linea)) {
+        if (linea.empty() || linea[0] == '#') continue;
+        istringstream ss(linea);
+        string tipo; ss >> tipo;
+        if (tipo == "enrutador") {
+            string id; ss >> id;
+            routers[id] = Enrutador(id);
+        } else if (tipo == "enlace") {
+            string a, b; int c;
+            ss >> a >> b >> c;
+            if (routers.count(a) && routers.count(b)) {
+                routers[a].agregarVecino(b, c);
+                routers[b].agregarVecino(a, c);
+            }
+        }
+    }
+    recalcularTodo();
+    cout << " Red cargada desde " << ruta << endl;
+    return true;
+}
+
+
 
