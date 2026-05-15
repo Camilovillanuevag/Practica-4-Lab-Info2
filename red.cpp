@@ -121,5 +121,22 @@ void Red::mostrarCamino(const string& origen, const string& destino) const {
 
     cout << "  Costo total: " << costo << endl;
 }
+void Red::mostrarTablaEnrutador(const string& id) {
+    if (!routers.count(id)) {
+        cout << "[!] Enrutador " << id << " no encontrado." << endl;
+        return;
+    }
+    routers[id].mostrarVecinos();
+    cout << endl;
+    routers[id].mostrarTablaCostos();
+}
 
+void Red::mostrarTodasLasTablas() {
+    for (auto& par : routers) {
+        cout << "\n" << endl;
+        par.second.mostrarVecinos();
+        cout << endl;
+        par.second.mostrarTablaCostos();
+    }
+}
 

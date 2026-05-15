@@ -1,0 +1,10 @@
+enrutador A
+enrutador B
+enrutador C
+enrutador D
+enlace A B 4
+enlace A C 10
+enlace A D 5
+enlace B C 3
+enlace B D 1
+enlace C D 2
