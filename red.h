@@ -37,6 +37,8 @@ public:
     void mostrarTablaEnrutador(const string& id);
     void mostrarTodasLasTablas();
     void mostrarMatrizCostos() const;
+    void mostrarEnrutadores() const;
+    bool estaVacia() const;
 
     // Carga desde archivo
     bool cargarDesdeArchivo(const string& ruta);

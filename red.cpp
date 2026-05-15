@@ -154,7 +154,7 @@ void Red::mostrarMatrizCostos() const {
             if (origen == dest) { cout << "0\t"; continue; }
             const auto& paths = caminos.at(origen);
             if (!paths.count(dest) || paths.at(dest).empty()) {
-                cout << "INF\t";
+                cout << "0\t";
             } else {
                 const vector<string>& c = paths.at(dest);
                 int total = 0;
@@ -196,5 +196,16 @@ bool Red::cargarDesdeArchivo(const string& ruta) {
     return true;
 }
 
-
+void Red::mostrarEnrutadores() const {
+    cout << "\nEnrutadores en la red: ";
+    if (routers.empty()) {
+        cout << "(ninguno)" << endl;
+        return;
+    }
+    for (auto& par : routers) cout << par.first << " ";
+    cout << endl;
+}
+bool Red::estaVacia() const {
+    return routers.empty();
+}
 
